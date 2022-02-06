@@ -1,2 +1,2 @@
-# flask-sample
-flask sample
+# flask-example
+flask example
