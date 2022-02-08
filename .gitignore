@@ -1,0 +1,11 @@
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+*$py.class
+config.py
+.pytest_cache/
+assets/
+.coverage
+*.log
+.DS_Store
