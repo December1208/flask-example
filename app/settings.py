@@ -27,7 +27,6 @@ class Setting(object):
 
             setattr(self, key, value)
 
-
     def _convert_type(self, k, v):
         default_value = self.default[k]
         if default_value is None:
