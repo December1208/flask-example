@@ -3,9 +3,9 @@ from collections import OrderedDict
 import jwt
 from flask import current_app, request, Flask, jsonify
 from werkzeug.local import LocalProxy
-from flask_jwt_login import utils
+
 from flask_jwt_login.exception import JWTError
-from flask_jwt_login.token import RefreshToken, AccessToken
+from flask_jwt_login.token import Token, RefreshToken, AccessToken
 
 CONFIG_DEFAULTS = {
     'JWT_ALGORITHM': 'HS256',
@@ -21,47 +21,27 @@ CONFIG_DEFAULTS = {
 _jwt = LocalProxy(lambda: current_app.extensions['jwt-login'])
 
 
-def _default_access_jwt_payload_handler(identity):
-    iat = utils.int_timestamp()
-    exp = iat + current_app.config.get('JWT_EXPIRATION_DELTA')
-    nbf = iat + current_app.config.get('JWT_NOT_BEFORE_DELTA')
-    identity_claim = current_app.config.get('JWT_IDENTITY_CLAIM')
-    identity_value = getattr(identity, identity_claim) or identity[identity_claim]
-    return {'exp': exp, 'iat': iat, 'nbf': nbf, identity_claim: identity_value, 'token_type': TokenType.ACCESS}
+def _default_jwt_payload_handler(identity, token_cls: Token):
+    payload = token_cls.get_payload(identity)
 
-
-def _default_refresh_jwt_payload_handler(identity):
-    iat = utils.int_timestamp()
-    exp = iat + current_app.config.get('JWT_EXPIRATION_DELTA')
-    nbf = iat + current_app.config.get('JWT_NOT_BEFORE_DELTA')
-    identity_claim = current_app.config.get('JWT_IDENTITY_CLAIM')
-    identity_value = getattr(identity, identity_claim) or identity[identity_claim]
-    return {'exp': exp, 'iat': iat, 'nbf': nbf, identity_claim: identity_value, 'token_type': TokenType.REFRESH}
-
-
-def _default_jwt_payload_handler(identity, token_type=TokenType.ACCESS):
-    if token_type == TokenType.ACCESS:
-        payload = _jwt.access_jwt_payload_callback(identity)
-    elif token_type == TokenType.REFRESH:
-        payload = _jwt.refresh_jwt_payload_callback(identity)
-    else:
-        raise JWTError("Unknown Token Type", "unknown token type", 400)
     return payload
 
 
-def _default_jwt_decode_handler(token):
-    secret = current_app.config['JWT_SECRET_KEY']
-    algorithm = current_app.config['JWT_ALGORITHM']
+def _default_jwt_decode_handler(token, token_cls: Token):
+    try:
+        return jwt.decode(token, token_cls.jwt_secret_key, algorithms=[token_cls.jwt_algorithm, ])
+    except jwt.InvalidSignatureError:
+        raise JWTError("InvalidSignatureError", "invalid signature")
+    except jwt.ExpiredSignatureError:
+        raise JWTError("ExpiredSignatureError", "expire signature")
+    except Exception as e:
+        raise JWTError("UnknownError", "unknown signature")
 
-    return jwt.decode(token, secret, algorithms=[algorithm])
 
+def _default_jwt_encode_handler(identity, token_cls: Token):
+    payload = _jwt.jwt_payload_callback(identity, token_cls)
 
-def _default_jwt_encode_handler(identity):
-    secret = current_app.config['JWT_SECRET_KEY']
-    algorithm = current_app.config['JWT_ALGORITHM']
-    payload = _jwt.jwt_payload_callback(identity)
-
-    return jwt.encode(payload, secret, algorithm=algorithm)
+    return jwt.encode(payload=payload, key=token_cls.jwt_secret_key, algorithm=token_cls.jwt_algorithm)
 
 
 def _default_request_handler():
@@ -86,34 +66,39 @@ class JWT(object):
         self.access_token_cls = AccessToken
         self.refresh_token_cls = RefreshToken
 
-        self.jwt_payload_callback = None
-        self.access_jwt_payload_callback = None
-        self.refresh_jwt_payload_callback = None
-        self.jwt_encode_callback = None
-        self.jwt_decode_callback = None
-        self.jwt_error_callback = None
-        self.request_handler = None
+        self.jwt_payload_callback = _default_jwt_payload_handler
+        self.jwt_decode_callback = _default_jwt_decode_handler
+        self.jwt_encode_callback = _default_jwt_encode_handler
+
+        self.jwt_error_callback = _default_error_handler
+        self.request_handler = _default_request_handler
 
         if app:
             self.init_app(app)
 
     def init_app(self, app: Flask):
+        for k, v in CONFIG_DEFAULTS.items():
+            app.config.setdefault(k, v)
+        app.config.setdefault('JWT_SECRET_KEY', app.config['SECRET_KEY'])
         app.errorhandler(JWTError)(self._jwt_error_callback)
         self.init_access_token_cls()
         self.init_refresh_token_cls()
 
     def init_access_token_cls(self):
-        self.access_token_cls.jwt_algorithm =
-        pass
+        self.access_token_cls.jwt_algorithm = current_app.config.get('JWT_ALGORITHM')
+        self.access_token_cls.jwt_secret_key = current_app.config.get('JWT_SECRET_KEY')
+        self.access_token_cls.jwt_exp_claim = current_app.config.get('JWT_EXP_CLAIM')
+        self.access_token_cls.jwt_jti_claim = current_app.config.get('JWT_JTI_CLAIM')
+        self.access_token_cls.jwt_identity_claim = current_app.config.get('JWT_IDENTITY_CLAIM')
+        self.access_token_cls.lifetime = current_app.config.get('JWT_ACCESS_TOKEN_LIFETIME')
 
     def init_refresh_token_cls(self):
-        pass
+        self.refresh_token_cls.jwt_algorithm = current_app.config.get('JWT_ALGORITHM')
+        self.refresh_token_cls.jwt_secret_key = current_app.config.get('JWT_SECRET_KEY')
+        self.refresh_token_cls.jwt_exp_claim = current_app.config.get('JWT_EXP_CLAIM')
+        self.refresh_token_cls.jwt_jti_claim = current_app.config.get('JWT_JTI_CLAIM')
+        self.refresh_token_cls.jwt_identity_claim = current_app.config.get('JWT_IDENTITY_CLAIM')
+        self.refresh_token_cls.lifetime = current_app.config.get('JWT_REFRESH_TOKEN_LIFETIME')
 
     def _jwt_error_callback(self, error):
         return self.jwt_error_callback(error)
-
-    def get_refresh_token(self, identity):
-        return self.jwt_encode_callback(identity)
-
-    def get_access_token(self, identity):
-        return self.jwt_encode_callback(identity)
