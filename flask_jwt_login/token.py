@@ -6,8 +6,6 @@ class Token:
     lifetime = None
     jwt_secret_key = None
     jwt_algorithm = None
-    jwt_exp_claim = None
-    jwt_jti_claim = None
     jwt_identity_claim = None
     not_before_delta = None
 
@@ -24,7 +22,8 @@ class Token:
             "exp": exp,
             "nbf": nbf,
             self.jwt_identity_claim: identity_value,
-            "token_type": self.token_type
+            "token_type": self.token_type,
+            "jti": utils.uuid4_str()
         }
         return payload
 

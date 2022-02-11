@@ -7,6 +7,8 @@ from werkzeug.local import LocalProxy
 from flask_jwt_login.exception import JWTError
 from flask_jwt_login.token import Token, RefreshToken, AccessToken
 
+EXTENSION_KEY = "jwt-login"
+
 CONFIG_DEFAULTS = {
     'JWT_ALGORITHM': 'HS256',
     'JWT_LEEWAY': 10,
@@ -18,7 +20,7 @@ CONFIG_DEFAULTS = {
 }
 
 
-_jwt = LocalProxy(lambda: current_app.extensions['jwt-login'])
+_jwt = LocalProxy(lambda: current_app.extensions[EXTENSION_KEY])
 
 
 def _default_jwt_payload_handler(identity, token_cls: Token):
@@ -84,21 +86,24 @@ class JWT(object):
         self.init_access_token_cls()
         self.init_refresh_token_cls()
 
+        if not hasattr(app, 'extensions'):  # pragma: no cover
+            app.extensions = {}
+
+        app.extensions[EXTENSION_KEY] = self
+
     def init_access_token_cls(self):
         self.access_token_cls.jwt_algorithm = current_app.config.get('JWT_ALGORITHM')
         self.access_token_cls.jwt_secret_key = current_app.config.get('JWT_SECRET_KEY')
-        self.access_token_cls.jwt_exp_claim = current_app.config.get('JWT_EXP_CLAIM')
-        self.access_token_cls.jwt_jti_claim = current_app.config.get('JWT_JTI_CLAIM')
         self.access_token_cls.jwt_identity_claim = current_app.config.get('JWT_IDENTITY_CLAIM')
         self.access_token_cls.lifetime = current_app.config.get('JWT_ACCESS_TOKEN_LIFETIME')
+        self.access_token_cls.not_before_delta = current_app.config.get('JWT_NOT_BEFORE_DELTA')
 
     def init_refresh_token_cls(self):
         self.refresh_token_cls.jwt_algorithm = current_app.config.get('JWT_ALGORITHM')
         self.refresh_token_cls.jwt_secret_key = current_app.config.get('JWT_SECRET_KEY')
-        self.refresh_token_cls.jwt_exp_claim = current_app.config.get('JWT_EXP_CLAIM')
-        self.refresh_token_cls.jwt_jti_claim = current_app.config.get('JWT_JTI_CLAIM')
         self.refresh_token_cls.jwt_identity_claim = current_app.config.get('JWT_IDENTITY_CLAIM')
         self.refresh_token_cls.lifetime = current_app.config.get('JWT_REFRESH_TOKEN_LIFETIME')
+        self.access_token_cls.not_before_delta = current_app.config.get('JWT_NOT_BEFORE_DELTA')
 
     def _jwt_error_callback(self, error):
         return self.jwt_error_callback(error)

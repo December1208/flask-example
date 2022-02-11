@@ -1,4 +1,5 @@
 import time
+import uuid
 
 
 def int_timestamp() -> int:
@@ -15,3 +16,7 @@ def int_millisecond_timestamp() -> int:
     :return:
     """
     return int(time.time() * 1000)
+
+
+def uuid4_str():
+    return str(uuid.uuid4())
