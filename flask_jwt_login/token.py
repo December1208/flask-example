@@ -6,22 +6,21 @@ class Token:
     lifetime = None
     jwt_secret_key = None
     jwt_algorithm = None
-    jwt_identity_claim = None
     not_before_delta = None
 
     def __init__(self, token=None):
         self.token = token
 
-    def get_payload(self, identity):
+    def get_payload(self, user):
         iat = utils.int_timestamp()
         exp = iat + self.lifetime
         nbf = iat + self.not_before_delta
-        identity_value = getattr(identity, self.jwt_identity_claim) or identity[self.jwt_identity_claim]
+        user_id = getattr(user, "id") or user['id']
         payload = {
             "iat": iat,
             "exp": exp,
             "nbf": nbf,
-            self.jwt_identity_claim: identity_value,
+            "user_id": user_id,
             "token_type": self.token_type,
             "jti": utils.uuid4_str()
         }
