@@ -1,6 +1,6 @@
 from flask import Flask
 import importlib
-from flask_jwt import JWT
+from app.extensions import db, jwt
 
 ADDONS = [
 
@@ -22,6 +22,10 @@ def create_app():
 
     # import models
     import_models()
+
+    db.init_app(_app)
+
+    jwt.init_app(_app)
 
     return _app
 
