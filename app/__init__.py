@@ -3,7 +3,7 @@ import importlib
 from app.extensions import db, jwt
 
 ADDONS = [
-
+    'account'
 ]
 
 

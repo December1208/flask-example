@@ -5,7 +5,13 @@ import os
 class Setting(object):
 
     default = {
-
+        'ENV': 'development',
+        'DEBUG': True,
+        'TESTING': False,
+        'SECRET_KEY': '6ea36d022bb44727be60ca22483fa22d999535294fd4922242b470a922e955c3',
+        'API_SECRET_KEY': 'ddfaac4a33c94806',
+        'SQLALCHEMY_DATABASE_URI': 'postgresql://lintcodesaas:lintcodesaas@localhost:5432/lintcode_saas',
+        'TEST_SQLALCHEMY_DATABASE_URI': 'postgresql://lintcodesaas:lintcodesaas@localhost:5432/test_lintcode_saas',
     }
 
     def __init__(self):
