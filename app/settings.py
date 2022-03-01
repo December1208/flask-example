@@ -9,9 +9,14 @@ class Setting(object):
         'DEBUG': True,
         'TESTING': False,
         'SECRET_KEY': '6ea36d022bb44727be60ca22483fa22d999535294fd4922242b470a922e955c3',
-        'API_SECRET_KEY': 'ddfaac4a33c94806',
+        'JWT_SECRET_KEY': 'ddfaac4a33c94806',
+        'JWT_TOKEN_LOCATION': ['headers'],
+        'JWT_ACCESS_TOKEN_EXPIRES': 60 * 5,
+        'JWT_REFRESH_TOKEN_EXPIRES': 60 * 60 * 24 * 7,
         'SQLALCHEMY_DATABASE_URI': 'postgresql://lintcodesaas:lintcodesaas@localhost:5432/lintcode_saas',
         'TEST_SQLALCHEMY_DATABASE_URI': 'postgresql://lintcodesaas:lintcodesaas@localhost:5432/test_lintcode_saas',
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+        'SQLALCHEMY_ENGINE_OPTIONS': {'pool_size': 10, 'pool_recycle': 3600},
     }
 
     def __init__(self):

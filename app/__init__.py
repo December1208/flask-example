@@ -1,6 +1,10 @@
-from flask import Flask
 import importlib
+
+from flask import Flask
+
 from app.extensions import db, jwt
+from app.routers import init_router
+from app.settings import setting
 
 ADDONS = [
     'account'
@@ -19,13 +23,16 @@ def import_models():
 def create_app():
 
     _app = Flask(__name__)
+    _app.config.from_object(setting)
+
+    db.init_app(_app)
 
     # import models
     import_models()
 
-    db.init_app(_app)
-
     jwt.init_app(_app)
+
+    init_router(_app)
 
     return _app
 

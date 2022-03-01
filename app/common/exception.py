@@ -17,8 +17,10 @@ class Error:
     InvalidParamsError = (100008, '无效的请求参数')
     TooManyDataError = (100009, '查询到太多的数据,请添加查询条件')
     ObjectNotFountError = (100010, '没有找到这条记录')
-    TokenExpireError = (100011, '页面已过期,请刷新重试')
     NetWorkError = (100014, '服务器开小差了,请稍后再试')
+
+    TokenExpiredError = (100015, 'token 已过期')
+    InvalidTokenError = (100016, '无效的 token')
 
 
 class APIException(HTTPException):
@@ -30,13 +32,13 @@ class APIException(HTTPException):
             self, detail=None, error_code: Optional[str] = None, error: Optional[Tuple[str, str]] = None,
             extra_info=None
     ):
+        if error:
+            self.error_code = error[0]
+            self.detail = error[1]
         if detail:
             self.detail = detail
         if error_code:
             self.error_code = error_code
-        if error:
-            self.error_code = error[0]
-            self.detail = error[1]
         self.extra_info = extra_info
 
         super(APIException, self).__init__(detail, None)

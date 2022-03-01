@@ -16,17 +16,7 @@ def _build_response_data(data=None, page_info=None):
     return result
 
 
-def standard_ok_response():
-    response_data = {
-        'code': 200,
-        'data': {'result': None},
-        'detail': '',
-        'success': True
-    }
-    return jsonify(response_data), 200
-
-
-def standard_response_with_data(data: Union[List, Dict] = None, page_info: Dict = None):
+def standard_response(data: Union[List, Dict] = None, page_info: Dict = None):
     response_data = {
         'code': 200,
         'data': _build_response_data(data, page_info),
