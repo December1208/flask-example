@@ -1,8 +1,8 @@
 from flask import Blueprint, request
-from app.common import response
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from app.settings import setting
 
+from app.common import response
+from app.settings import setting
 
 account_api = Blueprint('account-api', __name__)
 
