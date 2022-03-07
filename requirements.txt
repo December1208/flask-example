@@ -22,3 +22,6 @@ typing_extensions==4.1.1
 Werkzeug==2.0.3
 wincertstore==0.2
 zipp==3.7.0
+marshmallow==3.14.1
+cryptography==3.4.8
+pymysql==1.0.2

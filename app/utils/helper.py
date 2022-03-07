@@ -11,6 +11,10 @@ from app.common.exception import APIException, Error
 from app.extensions import db, logger
 from app.settings import setting
 from app.utils import time as custom_time
+import string
+
+
+ALLOWED_CHARS = string.ascii_letters + string.ascii_lowercase + string.ascii_uppercase
 
 
 def uuid():
@@ -92,7 +96,7 @@ def get_param(params, key, _type, nullable=False, default=None, extra_validation
         raise APIException(detail=f"{key_verbose_name or key} 参数类型错误", error_code=Error.InvalidParamsError[0])
 
 
-def get_random_string(length=12, allowed_chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
+def get_random_string(length=12, allowed_chars=ALLOWED_CHARS):
     _random = random.SystemRandom()
     _random.seed(
         hashlib.sha256(
