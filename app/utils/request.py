@@ -4,9 +4,9 @@ import json
 import requests
 from requests import Response
 from requests.exceptions import ReadTimeout, ConnectTimeout
-from apps.foundation import logger
-from apps.utils import time as custom_time
-from apps.common.exception import Error, APIException
+from app.extensions import logger
+from app.utils import time as custom_time
+from app.common.exception import Error, APIException
 
 
 class NetWorkError(Exception):

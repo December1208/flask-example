@@ -5,5 +5,3 @@ from flask import Flask
 def init_router(app: Flask):
 
     app.register_blueprint(account_api, url_prefix='/api/')
-
-

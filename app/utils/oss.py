@@ -3,8 +3,8 @@ import time
 
 import oss2
 
-from apps.foundation import logger
-from apps.settings import setting
+from app.extensions import logger
+from app.settings import setting
 
 OSS_UPLOAD_MAX_RETRIES = 2
 
