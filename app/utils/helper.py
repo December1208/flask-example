@@ -1,18 +1,14 @@
 import hashlib
 import random
+import string
 import time
 import uuid as uuid_
 from collections import defaultdict
-from mimetypes import guess_extension
-
-import requests
 
 from app.common.exception import APIException, Error
 from app.extensions import db, logger
 from app.settings import setting
 from app.utils import time as custom_time
-import string
-
 
 ALLOWED_CHARS = string.ascii_letters + string.ascii_lowercase + string.ascii_uppercase
 
@@ -151,11 +147,6 @@ def build_statistics_data(queryset, start_at, end_at, time_field='created_at', i
     return result
 
 
-def get_content_and_type(response: requests.Response):
-    file_type = guess_extension(response.headers['content-type'].partition(';')[0].strip()).strip('.')
-    return response.content, file_type
-
-
 def int_or_none(int_):
     try:
         return int(int_)
@@ -168,23 +159,3 @@ def str_or_none(str_):
         return str(str_)
     except:
         return None
-
-
-def is_valid_phone_number(phone_number):
-    """简单验证手机号是否合法"""
-    return isinstance(phone_number, str) and phone_number.isdigit()
-
-
-def inverse_dict(d):
-    return {v: k for k, v in d.items()}
-
-
-def line_break_to_br(s):
-    return s.replace('\n', '<br>')
-
-
-def render_code(data):
-    if data:
-        return f'<p><code>{data}</code></p>'
-    else:
-        return data
