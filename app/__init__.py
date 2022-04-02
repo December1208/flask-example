@@ -7,7 +7,8 @@ from app.routers import init_router
 from app.settings import setting
 
 ADDONS = [
-    'account'
+    'account',
+    'event_schedule'
 ]
 
 
