@@ -3,6 +3,7 @@ import importlib
 from flask import Flask
 
 from app.extensions import db, jwt
+from app.jwt_callbacks import expired_token_callback, invalid_token_callback
 from app.routers import init_router
 from app.settings import setting
 
@@ -32,6 +33,8 @@ def create_app():
     import_models()
 
     jwt.init_app(_app)
+    jwt.expired_token_loader(expired_token_callback)
+    jwt.invalid_token_loader(invalid_token_callback)
 
     init_router(_app)
 
