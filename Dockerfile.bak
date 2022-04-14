@@ -1,0 +1,20 @@
+FROM ubuntu:20.04
+
+RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone \
+    && apt update && apt upgrade -y \
+    && apt install gcc g++ libffi-dev build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev \
+    libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev wget -y \
+    && cd /home \
+    && mkdir Downloads \
+    && cd Downloads \
+    && wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz \
+    && tar -zxvf Python-3.10.4.tgz \
+    && cd Python-3.10.4 \
+    && ./configure --prefix=/opt/python3.10.4 --with-pydebug --enable-optimizations \
+    && make install \
+    && cd / \
+    && rm -rf /home/Downloads \
+    && ln -s /opt/python3.10.4/bin/python3.10 /usr/bin/python \
+    && ln -s /opt/python3.10.4/bin/pip3.10 /usr/bin/pip
+
+CMD ["bash"]

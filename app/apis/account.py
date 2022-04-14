@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, current_user
 
 from app.common import response
 from app.common.exception import APIException
@@ -63,6 +63,6 @@ def _refresh():
 
 
 @account_api.route('/account/profile/', methods=['GET'])
-@jwt_required()
+@jwt_required(optional=True)
 def _profile():
     return response.standard_response({})
