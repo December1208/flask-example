@@ -17,6 +17,7 @@ class Setting(object):
         'TEST_SQLALCHEMY_DATABASE_URI': 'postgresql://lintcodesaas:lintcodesaas@localhost:5432/test_lintcode_saas',
         'SQLALCHEMY_TRACK_MODIFICATIONS': False,
         'SQLALCHEMY_ENGINE_OPTIONS': {'pool_size': 10, 'pool_recycle': 3600},
+        'TEST_DATA_PATH': 'sample_data',
     }
 
     def __init__(self):

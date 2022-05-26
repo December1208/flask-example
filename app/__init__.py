@@ -2,7 +2,7 @@ import importlib
 
 from flask import Flask
 
-from app.extensions import db, jwt
+from app.extensions import db, jwt, sample_test
 from app.jwt_callbacks import expired_token_callback, invalid_token_callback, user_lookup_callback, verify_jwt_in_request
 from app.routers import init_router
 from app.settings import setting
@@ -40,6 +40,7 @@ def create_app():
     view_decorators.verify_jwt_in_request = verify_jwt_in_request
 
     init_router(_app)
+    sample_test.init_app(_app, db)
 
     return _app
 

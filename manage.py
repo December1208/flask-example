@@ -5,11 +5,13 @@ from app import app
 from app.extensions import db
 from app.settings import setting
 from sqlalchemy_utils import database_exists, create_database, drop_database
+from flask_sample_test.manage import SampleTestCommand
 
 manager = Manager(app)
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 manager.add_command("runserver", Server('0.0.0.0', port=8000))
+manager.add_command('test', SampleTestCommand)
 
 
 @manager.command
