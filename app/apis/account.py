@@ -13,11 +13,6 @@ from app.serializers.account import CreateAccountSerializer
 account_api = Blueprint('account-api', __name__)
 
 
-@account_api.route('/account/<string:test_str>/', methods=['GET'])
-def _test(test_str):
-    return response.standard_response(test_str)
-
-
 @account_api.route('/account/', methods=['POST'])
 def _create_account():
     serializer = CreateAccountSerializer().load(request.get_json() or {})
@@ -68,7 +63,7 @@ def _refresh():
 
 
 @account_api.route('/account/profile/', methods=['GET'])
-# @jwt_required(optional=True)
+@jwt_required(optional=True)
 def _profile():
     return response.standard_response({})
 
