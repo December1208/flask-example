@@ -9,4 +9,4 @@ assets/
 .coverage
 *.log
 .DS_Store
-env.json
+.env
