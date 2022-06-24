@@ -1,8 +1,7 @@
 import json
 import os
-import dotenv
-from typing import Union
 
+import dotenv
 
 dotenv.load_dotenv(verbose=True)
 
