@@ -1,8 +1,8 @@
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Server, Manager
 
-from app import app
-from app.extensions import db
+from server import app
+from common.extensions import db
 from app.settings import setting
 from sqlalchemy_utils import database_exists, create_database, drop_database
 from flask_sample_test.manage import SampleTestCommand

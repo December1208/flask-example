@@ -4,7 +4,7 @@ import time
 
 from dateutil import parser
 
-from app.extensions import logger
+from common.extensions import logger
 
 PER_MINUTE_SECONDS = 60
 PER_HOUR_SECONDS = 3600

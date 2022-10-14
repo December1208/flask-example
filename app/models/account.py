@@ -1,5 +1,5 @@
 from app.models.base import BaseModel
-from app.extensions import db
+from common.extensions import db
 
 
 class Account(BaseModel):

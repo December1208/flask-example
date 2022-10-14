@@ -1,6 +1,6 @@
-from app.common.exception import APIException, Error
+from common.exception import APIException, Error
 from app.models.account import Account, Profile
-from app.extensions import db
+from common.extensions import db
 from flask_jwt_extended.config import config
 
 

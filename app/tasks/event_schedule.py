@@ -2,8 +2,8 @@ from app.constants.event_schedule import EventStatus, EVENT_STATUS_DISPLAY_NAME
 from app.models.event_schedule import EventSchedule
 from app.services.event_schedule import EventService
 from asynctask.app import celery
-from app.extensions import db, logger
-from app.utils import helper, time as time_util
+from common.extensions import db, logger
+from utils import helper, time as time_util
 
 
 @celery.task()

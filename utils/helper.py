@@ -5,10 +5,10 @@ import time
 import uuid as uuid_
 from collections import defaultdict
 
-from app.common.exception import APIException, Error
-from app.extensions import db, logger
+from common.exception import APIException, Error
+from common.extensions import db, logger
 from app.settings import setting
-from app.utils import time as custom_time
+from utils import time as custom_time
 
 ALLOWED_CHARS = string.ascii_letters + string.ascii_lowercase + string.ascii_uppercase
 

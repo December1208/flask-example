@@ -41,7 +41,7 @@ class RequestIdFilter(logging.Filter):
 
 
 def init_logging_config(app):
-    from app.utils.safe_rotating_file_handler import SafeRotatingFileHandler
+    from utils.safe_rotating_file_handler import SafeRotatingFileHandler
     base_config = app.config.copy()
     log_level = base_config.get('LOG_LEVEL', logging.INFO)
     log_path = base_config.get('LOG_PATH', '')

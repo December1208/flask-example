@@ -2,7 +2,7 @@ import dataclasses
 from typing import Callable
 
 from app.constants.event_schedule import EventStatus
-from app.extensions import db, logger
+from common.extensions import db, logger
 from app.models.event_schedule import EventSchedule, EventRelation
 from app.value_objects.event_schedule import BaseParams
 

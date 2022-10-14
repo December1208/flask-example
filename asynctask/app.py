@@ -5,7 +5,7 @@ from celery import Celery
 from celery.schedules import crontab
 from kombu import Queue
 
-from app import app as flask_app
+from server import app as flask_app
 from asynctask.loader import TaskDirsLoader, AsyncTaskLoader
 from asynctask.task import ContextTask
 

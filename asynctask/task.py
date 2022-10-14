@@ -2,9 +2,9 @@ from abc import ABC
 
 import celery
 
-from app import app as flask_app
-from app.extensions import db, logger
-from app.common.logging import set_logger_config
+from server import app as flask_app
+from common.extensions import db, logger
+from common.logging import set_logger_config
 
 
 class ContextTask(celery.Task, ABC):

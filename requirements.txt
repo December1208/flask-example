@@ -30,3 +30,5 @@ pycryptodome==3.14.1
 celery==5.2.3
 flask-sample-test==0.0.5
 python-dotenv==0.20.0
+oss2==2.16.0
+requests==2.28.1

@@ -1,5 +1,5 @@
-from app.extensions import db
-from app.utils import time as time_util, helper
+from common.extensions import db
+from utils import time as time_util, helper
 
 
 class BaseModel(db.Model):

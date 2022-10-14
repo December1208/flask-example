@@ -4,7 +4,7 @@ import hashlib
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
 
-from app.utils.helper import get_random_string
+from utils.helper import get_random_string
 
 
 class PBKDF2PasswordHash:

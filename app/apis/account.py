@@ -1,12 +1,12 @@
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, current_user
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 
-from app.common import response
-from app.common.exception import APIException
-from app.extensions import db
+from common import response
+from common.exception import APIException
+from common.extensions import db
 from app.models.account import Account
 from app.settings import setting
-from app.utils import pbkdf2hash, helper
+from utils import pbkdf2hash, helper
 from app.serializers.account import CreateAccountSerializer
 
 
@@ -66,5 +66,3 @@ def _refresh():
 @jwt_required(optional=True)
 def _profile():
     return response.standard_response({})
-
-
