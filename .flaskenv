@@ -1,3 +1,3 @@
-FLASK_APP=app
+FLASK_APP=server
 FLASK_ENV=development
 SQLALCHEMY_DATABASE_URI=
