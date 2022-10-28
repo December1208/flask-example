@@ -34,7 +34,7 @@ def create_app():
     _app = Flask(__name__)
     _app.config.from_object(setting)
 
-    db.init_app(_app)
+    # db.init_app(_app)
 
     # import models
     import_models()

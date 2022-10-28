@@ -60,7 +60,7 @@ def load_setting_value(field, field_type, default_value):
 
 class Setting(object):
 
-    FLASK_ENV = load_setting_value('FLASK_ENV', str, 'production')
+    FLASK_DEBUG = load_setting_value('FLASK_DEBUG', bool, True)
     SECRET_KEY = load_setting_value('SECRET_KEY', str, '45008b73ad9d00c01f174dddd41df6ad')
     TESTING = load_setting_value('TESTING', bool, False)
     JWT_SECRET_KEY = load_setting_value('JWT_SECRET_KEY', str, 'ddfaac4a33c94806')

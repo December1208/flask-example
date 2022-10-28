@@ -1,8 +1,8 @@
 import time
-from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.primitives.ciphers import algorithms
 from Crypto.Cipher import AES
 from binascii import b2a_hex, a2b_hex
+
+from Crypto.Util.Padding import pad, unpad
 
 
 class AESCrypt:
@@ -53,20 +53,14 @@ class AESCrypt:
     def pkcs7_padding(data):
         if not isinstance(data, bytes):
             data = data.encode()
-
-        padder = padding.PKCS7(algorithms.AES.block_size).padder()
-
-        padded_data = padder.update(data) + padder.finalize()
+        padded_data = pad(data, AES.block_size)
 
         return padded_data
 
     @staticmethod
     def pkcs7_unpadding(padded_data):
-        unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
-        data = unpadder.update(padded_data)
-
         try:
-            uppadded_data = data + unpadder.finalize()
+            uppadded_data = unpad(padded_data, AES.block_size)
         except ValueError:
             raise Exception('无效的加密信息! ')
         else:
